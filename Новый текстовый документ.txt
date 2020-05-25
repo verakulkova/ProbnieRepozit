@@ -1,0 +1,25 @@
+Create table Probnoe_individ (id_prob_ind serial primary key, visits_ind text not null);
+Create table Individ_one_trainig (id_individ serial primary key, number_visits int);
+Create table DanceDirection (id_dance serial primary key, name_dance text not null, style text not null);
+Create table Teachers (id_teacher serial primary key, surname_teacher varchar(100) not null, name_teacher varchar(100) not null, lastname_teacher varchar(100));	
+Create table Probnoe_group (id_prob_gr serial primary key, visits_gr text, id_client int, id_dance int);
+Create table TimeTable( data timestamp primary key, id_dance int );
+Create table Roles (id_role serial primary key, role text not null);
+Create table Teachers_Dance  (id_teacher int REFERENCES teachers, id_dance int REFERENCES dancedirection, PRIMARY KEY(id_teacher,id_dance) );
+Create table ClientInformation (id_client serial primary key, surname VARCHAR (100) not null, name VARCHAR (100) not null, lastname VARCHAR (100), 
+id_prob_ind int, id_individ int, login varchar not null, password varchar not null, id_role int REFERENCES roles);
+Create table Abonements (id_ab serial primary key, kind_ab varchar (100), kind_numbers_in_ab int, numbers_lessons_ab int, id_client int);
+Create table Grouponetraining_client (id_client int REFERENCES clientinformation, id_dance int REFERENCES dancedirection,  num_gr int, PRIMARY KEY(id_client,id_dance) );					 
+
+Alter table ClientInformation ADD foreign key (id_prob_ind) 
+References Probnoe_individ (id_prob_ind);
+Alter table ClientInformation ADD foreign key (id_individ) 
+References Individ_one_trainig (id_individ);
+Alter table Abonements ADD foreign key (id_client) 
+References ClientInformation(id_client);				
+Alter table Probnoe_group ADD foreign key (id_client) 
+References ClientInformation (id_client);
+Alter table Probnoe_group ADD foreign key (id_dance) 
+References DanceDirection (id_dance); 
+Alter table Timetable ADD foreign key (id_dance) 
+References DanceDirection (id_dance);	
